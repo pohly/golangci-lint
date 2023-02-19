@@ -66,12 +66,25 @@ issues:
 
 Exclude issues in path by `run.skip-dirs`, `run.skip-files` or `issues.exclude-rules` config options.
 
-In the following example, all the reports from the linters (`linters`) that concerns the path (`path`) are excluded:
+In the following example, all the reports from the linters (`linters`) that concerns the path (`path`) are excluded
+and therefore test files do not get checked:
 
 ```yml
 issues:
   exclude-rules:
     - path: '(.+)_test\.go'
+      linters:
+        - funlen
+        - goconst
+```
+
+The opposite, excluding reports *except* for specific paths, is also possible.
+In the following example, only test files get checked:
+
+```yml
+issues:
+  exclude-rules:
+    - not-path: '(.+)_test\.go'
       linters:
         - funlen
         - goconst

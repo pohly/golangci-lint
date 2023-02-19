@@ -268,6 +268,7 @@ func getExcludeRulesProcessor(cfg *config.Issues, log logutils.Log, lineCache *f
 				Text:    r.Text,
 				Source:  r.Source,
 				Path:    r.Path,
+				NotPath: r.NotPath,
 				Linters: r.Linters,
 			},
 		})
@@ -311,6 +312,7 @@ func getSeverityRulesProcessor(cfg *config.Severity, log logutils.Log, lineCache
 				Text:    r.Text,
 				Source:  r.Source,
 				Path:    r.Path,
+				NotPath: r.NotPath,
 				Linters: r.Linters,
 			},
 		})

@@ -33,12 +33,19 @@ func TestExcludeRulesMultiple(t *testing.T) {
 		},
 		{
 			BaseRule: BaseRule{
+				Text:    "^nontestonly$",
+				NotPath: `_test\.go`,
+			},
+		},
+		{
+			BaseRule: BaseRule{
 				Source:  "^//go:generate ",
 				Linters: []string{"lll"},
 			},
 		},
 	}, lineCache, nil)
 
+	//nolint:dupl
 	cases := []issueTestCase{
 		{Path: "e.go", Text: "exclude", Linter: "linter"},
 		{Path: "e.go", Text: "some", Linter: "linter"},
@@ -46,6 +53,8 @@ func TestExcludeRulesMultiple(t *testing.T) {
 		{Path: "e_Test.go", Text: "normal", Linter: "testlinter"},
 		{Path: "e_test.go", Text: "another", Linter: "linter"},
 		{Path: "e_test.go", Text: "testonly", Linter: "linter"},
+		{Path: "e.go", Text: "nontestonly", Linter: "linter"},
+		{Path: "e_test.go", Text: "nontestonly", Linter: "linter"},
 		{Path: filepath.Join("testdata", "exclude_rules.go"), Line: 3, Linter: "lll"},
 	}
 	var issues []result.Issue
@@ -66,6 +75,7 @@ func TestExcludeRulesMultiple(t *testing.T) {
 		{Path: "e.go", Text: "some", Linter: "linter"},
 		{Path: "e_Test.go", Text: "normal", Linter: "testlinter"},
 		{Path: "e_test.go", Text: "another", Linter: "linter"},
+		{Path: "e_test.go", Text: "nontestonly", Linter: "linter"},
 	}
 	assert.Equal(t, expectedCases, resultingCases)
 }
@@ -131,6 +141,7 @@ func TestExcludeRulesCaseSensitiveMultiple(t *testing.T) {
 		},
 	}, lineCache, nil)
 
+	//nolint:dupl
 	cases := []issueTestCase{
 		{Path: "e.go", Text: "exclude", Linter: "linter"},
 		{Path: "e.go", Text: "excLude", Linter: "linter"},
